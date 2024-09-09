@@ -1,0 +1,43 @@
+<h1>Reservations</h1>
+
+<%= form_with model: @reservation, url: reservations_path, method: :post, local: true, data: { turbo: false } do |f| %>
+  <div>
+    <%= f.label :name, "Customer Name" %>
+    <%= f.text_field :name, name: "reservation[name]", required: true %>
+  </div>
+
+  <div>
+    <%= f.label :party_size, "Party Size" %>
+    <%= f.number_field :party_size, name: "reservation[party_size]", required: true, min: 1 %>
+  </div>
+
+  <div>
+    <%= f.label :reservation_time, "Reservation Time" %>
+    <%= f.select :reservation_time, options_for_select(@future_times, prompt: 'Select Date and Time'), {}, class: 'form-control' %>
+  </div>
+
+
+  <%= f.submit "Make Reservation" %>
+<% end %>
+
+<h2>Existing Reservations</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Party Size</th>
+      <th>Time</th>
+      <th>Tables</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @reservations.each do |reservation| %>
+      <tr>
+        <td><%= reservation.name %></td>
+        <td><%= reservation.party_size %></td>
+        <td><%= reservation.formatted_reservation_time %></td>
+        <td><%= reservation.tables.pluck(:number).join(', ') %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
