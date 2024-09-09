@@ -16,4 +16,19 @@ class Reservation < ApplicationRecord
   validates :name, presence: true
   validates :party_size, presence: true, numericality: { only_integer: true, greater_than: 0 }
   validates :reservation_time, presence: true
+
+  def reserve_tables
+    table = Table.available_table(party_size, reservation_time)
+
+    if table
+      self.tables << table
+      true
+    else
+      false
+    end
+  end
+
+  def formatted_reservation_time
+    reservation_time.strftime("%B %d, %Y at %I:%M %p") if reservation_time.present?
+  end
 end

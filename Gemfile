@@ -53,6 +53,7 @@ group :development, :test do
   gem "shoulda-matchers"
   gem "simplecov", require: false
   gem "rubocop-rails", require: false
+  gem "capybara"
 end
 
 group :development do
