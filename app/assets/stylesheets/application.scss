@@ -13,3 +13,26 @@
  *= require_tree .
  *= require_self
  */
+  @import "bootstrap";
+
+  .alert {
+    opacity: 1;
+    transition: opacity 1s ease-out;
+  }
+  
+  .alert.fade-out {
+    opacity: 0;
+  }
+
+  .form-label {
+    font-weight: bold;
+  }
+  
+  .btn-primary {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+  
+  .table-dark th, .table-dark td {
+    color: #f8f9fa;
+  }

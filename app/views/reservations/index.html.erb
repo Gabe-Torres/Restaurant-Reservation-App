@@ -1,43 +1,58 @@
-<h1>Reservations</h1>
+<h1 class="my-4 text-center">Reservations</h1>
 
-<%= form_with model: @reservation, url: reservations_path, method: :post, local: true, data: { turbo: false } do |f| %>
-  <div>
-    <%= f.label :name, "Customer Name" %>
-    <%= f.text_field :name, name: "reservation[name]", required: true %>
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Holy guacamole!</strong> That table is already reserved. Please select another time.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <div class="card mb-4 shadow-sm">
+    <div class="card-header bg-primary text-white">
+    <h2 class="mb-0">Make a Reservation</h2>
   </div>
 
-  <div>
-    <%= f.label :party_size, "Party Size" %>
-    <%= f.number_field :party_size, name: "reservation[party_size]", required: true, min: 1 %>
-  </div>
+  <div class="card-body">
+    <%= form_with model: @reservation, url: reservations_path, method: :post, local: true, data: { turbo: false } do |f| %>
+      <div class="mb-4">
+        <%= f.label :name, "Customer Name", class: "form-label" %>
+        <%= f.text_field :name, name: "reservation[name]", required: true, class: "form-control form-control-lg" %>
+      </div>
 
-  <div>
-    <%= f.label :reservation_time, "Reservation Time" %>
-    <%= f.select :reservation_time, options_for_select(@future_times, prompt: 'Select Date and Time'), {}, class: 'form-control' %>
-  </div>
+      <div class="mb-4">
+        <%= f.label :party_size, "Party Size", class: "form-label" %>
+        <%= f.number_field :party_size, name: "reservation[party_size]", required: true, min: 1, class: "form-control form-control-lg" %>
+      </div>
 
+      <div class="mb-4">
+        <%= f.label :reservation_time, "Reservation Time", class: "form-label" %>
+        <%= f.select :reservation_time, options_for_select(@future_times, prompt: 'Select Date and Time'), {}, class: 'form-select form-select-lg' %>
+      </div>
 
-  <%= f.submit "Make Reservation" %>
-<% end %>
-
-<h2>Existing Reservations</h2>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Party Size</th>
-      <th>Time</th>
-      <th>Tables</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @reservations.each do |reservation| %>
-      <tr>
-        <td><%= reservation.name %></td>
-        <td><%= reservation.party_size %></td>
-        <td><%= reservation.formatted_reservation_time %></td>
-        <td><%= reservation.tables.pluck(:number).join(', ') %></td>
-      </tr>
+      <div class="mb-4">
+        <%= f.submit "Make Reservation", class: "btn btn-primary btn-lg w-100" %>
+      </div>
     <% end %>
-  </tbody>
-</table>
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-header bg-success text-white">
+    <h2 class="mb-0">Existing Reservations</h2>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <% @reservations.each do |reservation| %>
+        <div class="col-md-4 mb-3">
+          <div class="card border-primary">
+            <div class="card-header bg-light">
+              <h5 class="card-title"><%= reservation.name %></h5>
+            </div>
+            <div class="card-body">
+              <p class="card-text">Party Size: <strong><%= reservation.party_size %></strong></p>
+              <p class="card-text">Reservation Time: <strong><%= reservation.formatted_reservation_time %></strong></p>
+              <p class="card-text">Tables: <strong><%= reservation.tables.pluck(:number).join(', ') %></strong></p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
