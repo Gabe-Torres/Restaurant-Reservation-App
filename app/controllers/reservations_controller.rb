@@ -9,7 +9,7 @@ class ReservationsController < ApplicationController
     @reservation = Reservation.new(reservation_params)
     if @reservation.valid? && @reservation.reserve_tables
       @reservation.save!
-      flash[:success] = "Reservation successful!"
+      flash[:notice] = "Reservation successful!"
     else
       flash[:alert] = "Reservation failed. Please check capacity and availability."
     end
