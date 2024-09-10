@@ -15,15 +15,15 @@ RSpec.describe ReservationsController, type: :controller do
         future_date = now + i.days
         date = future_date.beginning_of_day
 
-        (start_hour..23).map do |hour|
-          time = date.change(hour: hour, min: 0, sec: 0)
-          formatted_time = time.strftime("%B %d, %Y at %I:%M %p")
-          [formatted_time, time.iso8601]
+          (i == 0 ? (start_hour..23) : (0..23)).map do |hour|
+            time = date.change(hour: hour, min: 0, sec: 0)
+            time.strftime("%B %d, %Y at %I:%M %p") 
         end
       end
 
 
       expect(future_hours).to eq(expected_times)
+      expect(future_hours.uniq).to eq(future_hours)
     end
   end
 end

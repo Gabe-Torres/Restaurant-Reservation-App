@@ -26,20 +26,22 @@ class ReservationsController < ApplicationController
 
   def generate_future_times
     now = Time.current.in_time_zone("Central Time (US & Canada)")
-    start_hour = now.hour + 1
-    start_hour = 0 if start_hour >= 24
   
-    future_dates = (0..20).map do |i|
+    today_times = if now.hour < 23
+                    (now.hour + 1..23).map { |hour| format_time(now.change(hour: hour)) }
+                  else
+                    []
+                  end
+  
+    future_dates = (1..20).map do |i|
       future_date = now + i.days
-      future_date.beginning_of_day
-    end.uniq
-  
-    future_dates.flat_map do |date|
-      (start_hour..23).map do |hour|
-        time = date.change(hour: hour, min: 0, sec: 0)
-        formatted_time = time.strftime("%B %d, %Y at %I:%M %p")
-        [formatted_time, time.iso8601]
-      end
+      (0..23).map { |hour| format_time(future_date.change(hour: hour)) }
     end
+  
+    today_times + future_dates.flatten
+  end
+  
+  def format_time(time)
+    formatted_time = time.strftime("%B %d, %Y at %I:%M %p")
   end
 end
